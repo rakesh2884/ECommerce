@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+
+
+    {% if title %}
+        <title>Unwrap - {{ title }}</title>
+    {% else %}
+        <title>Unwrap</title>
+    {% endif %}
+</head>
+<body >
+    <header class="site-header">
+      <nav class="navbar  navbar-expand-md navbar-light fixed-top">
+        <div class="container">
+          
+          <div class="collapse navbar-collapse" id="navbarToggle" >
+            <div class="navbar-nav mr-auto" >
+              <a class="nav-item nav-link" href="{{ url_for('select_products') }}">Products</a>
+            
+            </div>
+          </div>
+            <div class="navbar-nav nostack" style="display: inline;">
+              {% if current_user.is_authenticated and current_user.role=="retailer"%}
+              <div class="collapse navbar-collapse" id="navbarToggle" >
+                <div class="navbar-nav mr-auto" >
+                  <a class="nav-item nav-link" href="{{ url_for('add_product') }}">Add Products</a>
+                
+                </div>
+              <a class="nav-item nav-link" href="{{ url_for('cart') }}" ><span class="glyphicon glyphicon-shopping-cart" id="cartitems" ></span></a>
+          
+              <small id="noOfItems">{{noOfItems}}</small>
+              <a class="nav-item nav-link" href="{{ url_for('account') }}"><span class="glyphicon glyphicon-user" ></span></a>    
+              <a class="nav-item nav-link" href="{{ url_for('logout') }}"><span class="glyphicon glyphicon-log-out" ></span></a> 
+              {% elif current_user.is_authenticated and current_user.role=="customer"%}  
+              
+              <a class="nav-item nav-link" href="{{ url_for('cart') }}" ><span class="glyphicon glyphicon-shopping-cart" id="cartitems" ></span></a>
+          
+              <small id="noOfItems">{{noOfItems}}</small>
+              <a class="nav-item nav-link" href="{{ url_for('account') }}"><span class="glyphicon glyphicon-user" ></span></a>    
+              <a class="nav-item nav-link" href="{{ url_for('logout') }}"><span class="glyphicon glyphicon-log-out" ></span></a> 
+              
+              {% else %}
+               
+                  <a class="nav-item nav-link" href="{{ url_for('login') }}" ><span class="glyphicon glyphicon-user" ></span></a>                 
+                 <a class="nav-item nav-link" href="{{ url_for('cart') }}"  ><span class="glyphicon glyphicon-shopping-cart"></span></a>
+
+              {% endif %}
+            </div>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        </div>
+      </nav>
+    </header>
+    <main role="main" class="container">
+
+          {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+              {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                  {{ message }}
+                </div>
+              {% endfor %}
+            {% endif %}
+          {% endwith %}
+          {% block content %}{% endblock %}
+    </main>
+
+</body>
+</html>

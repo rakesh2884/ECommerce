@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="row">
+    {% for product in products %}
+    
+
+        <div class="col-sm">
+						<b>
+						{{ product.name }}
+						</b>
+					</div>					    
+				    <p class="card-text">{{ product.price }}</p>
+					<div id="addToCart">
+						<a href="/addToCart/{{product.id}}">Add to cart</a>
+					</div>
+        		</div>
+			</div>
+		</div>
+
+	
+            
+
+
+    {% endfor %}
+</div>
+{% endblock content %}
